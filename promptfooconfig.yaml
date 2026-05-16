@@ -9,9 +9,15 @@ prompts:
 
 # Use devin cli as a provider via script execution
 providers:
-  - id: 'exec: ./devin_provider.sh'
+  # Devin CLI provider (commented out for testing)
+  # - id: 'exec: ./devin_provider.sh'
+  #   config:
+  #     model: 'SWE-1.6'
+
+  # GitHub Copilot CLI provider
+  - id: 'exec: ./gh_copilot_provider.sh'
     config:
-      model: 'SWE-1.6'
+      model: 'claude-haiku-4.5'
 
 # Test cases with variables
 tests:

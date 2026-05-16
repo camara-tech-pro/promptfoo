@@ -1,11 +1,12 @@
-# Promptfoo Config with Devin CLI
+# Promptfoo Config with Devin CLI and GitHub Copilot
 
-This project provides a basic promptfoo configuration that uses Devin CLI as a provider for running LLM evaluations.
+This project provides a basic promptfoo configuration that supports both Devin CLI and GitHub Copilot CLI as providers for running LLM evaluations.
 
 ## Files
 
 - `promptfooconfig.yaml` - Main promptfoo configuration file
 - `devin_provider.sh` - Shell script that wraps Devin CLI with model selection support
+- `gh_copilot_provider.sh` - Shell script that wraps GitHub Copilot CLI with model selection support
 
 ## Usage
 
@@ -14,7 +15,9 @@ This project provides a basic promptfoo configuration that uses Devin CLI as a p
    npm install -g promptfoo
    ```
 
-2. Ensure Devin CLI is installed and configured
+2. Ensure your chosen CLI is installed and configured:
+   - Devin CLI: https://cli.devin.ai
+   - GitHub Copilot CLI: `gh extension install copilot`
 
 3. Run the evaluation:
    ```bash
@@ -28,22 +31,40 @@ This project provides a basic promptfoo configuration that uses Devin CLI as a p
 The `promptfooconfig.yaml` file includes:
 
 - **Prompts**: Three example prompts testing different types of queries
-- **Provider**: Uses `exec: ./devin_provider.sh` with model configuration to call Devin CLI
+- **Providers**: Supports both Devin CLI and GitHub Copilot CLI via shell script wrappers
 - **Tests**: Four test cases with different variables (query, code, task)
 - **Output**: Results are saved to `results.html`
 
-## Model Selection
+## Provider Selection
 
-The configuration defaults to using the SWE-1.6 model. To use a different model, modify the `model` value in the provider config section of `promptfooconfig.yaml`:
+The configuration includes two providers (Devin CLI is currently commented out for testing):
 
+### Devin CLI
 ```yaml
 providers:
   - id: 'exec: ./devin_provider.sh'
     config:
-      model: 'YOUR_MODEL_NAME'
+      model: 'SWE-1.6'
 ```
 
-Replace `YOUR_MODEL_NAME` with the desired Devin model. The shell script reads this configuration and passes it to Devin CLI using the `--model` flag.
+### GitHub Copilot CLI
+```yaml
+providers:
+  - id: 'exec: ./gh_copilot_provider.sh'
+    config:
+      model: 'claude-haiku-4.5'
+```
+
+To switch between providers, comment/uncomment the appropriate provider section in `promptfooconfig.yaml`.
+
+## Model Selection
+
+Each provider supports model selection via the `model` config parameter:
+
+- **Devin CLI**: Modify the `model` value (e.g., `SWE-1.6`)
+- **GitHub Copilot CLI**: Modify the `model` value (e.g., `claude-haiku-4.5`)
+
+The shell scripts read this configuration and pass it to the respective CLI using the appropriate model flag.
 
 ## Customization
 
@@ -53,5 +74,7 @@ You can modify the configuration to:
 - Add more test cases in the `tests` section
 - Change the output format (HTML, JSON, CSV)
 - Add assertions to validate responses
+- Switch between Devin CLI and GitHub Copilot CLI providers
 - Change the model by modifying the `model` value in the provider config
-- Extend the shell script to handle additional OPTIONS or CONTEXT parameters
+- Extend either shell script to handle additional OPTIONS or CONTEXT parameters
+- Add multiple providers to compare results side-by-side
