@@ -9,7 +9,9 @@ prompts:
 # This script contains custom assertion functions used in tests
 defaultTest:
   options:
-    rubricPrompt: 'You are an expert evaluator. Rate the following response on a scale of 1-5 based on the provided rubric.'
+    # Use Claude Code CLI as the rubric judge — same provider family as execution,
+    # just evaluating Devin's output rather than generating it.
+    provider: 'exec: powershell -ExecutionPolicy Bypass -File ./claude_grader.ps1'
 
 # Use devin cli as a provider via script execution
 providers:
@@ -85,29 +87,79 @@ tests:
         ignoreCase: true
 
   # ========================================
-  # RUBRIC-BASED EVALUATIONS
+  # RUBRIC-BASED EVALUATIONS WITH SCORING
   # ========================================
+  # Each llm-rubric assertion evaluates a single quality dimension independently.
+  # - threshold: minimum score (0.0–1.0) required to pass this assertion
+  # - metric:    named label shown in the promptfoo web UI results table
+  # - weight:    relative importance when computing the overall test score
+  #
+  # This lets you see per-dimension scores, set different pass bars for
+  # critical vs. nice-to-have criteria, and weight what matters most.
+
   - vars:
       query: 'Explain the concept of recursion in programming'
-    description: 'Recursion explanation - rubric eval'
-    rubric: |
-      Evaluate the response on a scale of 1-5:
-      1. Does it define recursion clearly?
-      2. Does it provide a code example?
-      3. Does it explain the base case and recursive case?
-      4. Does it mention potential issues (stack overflow)?
-      5. Is the explanation easy to understand?
+    description: 'Recursion explanation - rubric with per-dimension scoring'
+    assert:
+      # Core definition — highest weight; must score at least 0.7
+      - type: llm-rubric
+        value: The response clearly defines what recursion is in plain language a non-expert could understand
+        threshold: 0.7
+        metric: clarity
+        weight: 2
+
+      # Code example — important for a technical explanation
+      - type: llm-rubric
+        value: The response includes at least one working code example that demonstrates recursion
+        threshold: 0.7
+        metric: code-example
+        weight: 1.5
+
+      # Base/recursive case — critical for correctness; strict threshold
+      - type: llm-rubric
+        value: The response explicitly explains both the base case (stopping condition) and the recursive case
+        threshold: 0.8
+        metric: base-case-explained
+        weight: 2
+
+      # Risks — nice to have; lower threshold and weight
+      - type: llm-rubric
+        value: The response mentions stack overflow or call stack depth as a potential pitfall
+        threshold: 0.4
+        metric: mentions-risks
+        weight: 1
 
   - vars:
       query: 'What are the best practices for error handling in JavaScript?'
-    description: 'Error handling best practices - rubric eval'
-    rubric: |
-      Rate the response (1-5) based on:
-      1. Coverage of try-catch-finally patterns
-      2. Mention of async/await error handling
-      3. Discussion of error objects and custom errors
-      4. Best practices for logging and monitoring
-      5. Practical examples provided
+    description: 'Error handling best practices - rubric with per-dimension scoring'
+    assert:
+      # try-catch — fundamental pattern; high weight
+      - type: llm-rubric
+        value: The response covers try-catch-finally patterns and explains when to use each clause
+        threshold: 0.7
+        metric: try-catch-coverage
+        weight: 2
+
+      # async — essential in modern JS; moderate threshold
+      - type: llm-rubric
+        value: The response addresses error handling for async/await code
+        threshold: 0.6
+        metric: async-error-handling
+        weight: 1.5
+
+      # Custom errors — good practice; lower threshold (advanced topic)
+      - type: llm-rubric
+        value: The response discusses creating or using custom error types
+        threshold: 0.4
+        metric: custom-error-types
+        weight: 1
+
+      # Actionability — must be practical, not just theory; high weight
+      - type: llm-rubric
+        value: The response gives concrete, actionable guidance a developer can apply immediately
+        threshold: 0.7
+        metric: actionability
+        weight: 1.5
 
   # ========================================
   # SCRIPT-BASED DETERMINISTIC EVALUATIONS
