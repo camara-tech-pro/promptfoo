@@ -24,6 +24,9 @@ defaultTest:
     #
     # Claude Code CLI grader
     # provider: 'exec: node ./claude.js'
+    #
+    # Gemini CLI grader
+    # provider: 'exec: node ./gemini.js'
 
 # Use devin cli as a provider via script execution
 providers:
@@ -48,6 +51,11 @@ providers:
   # - id: 'exec: node ./claude.js'
   #   config:
   #     model: 'haiku'
+
+  # Gemini CLI provider
+  # - id: 'exec: node ./gemini.js'
+  #   config:
+  #     model: 'gemini-1.5-flash'
 
 # Test cases with different evaluation types
 tests:

@@ -19,7 +19,8 @@ promptfoo/
 └── CLI Scripts (Cross-platform)
     ├── claude.js                # Claude Code CLI (provider + grader)
     ├── devin.js                 # Devin CLI (provider + grader)
-    └── gh_copilot.js            # GitHub Copilot CLI (provider + grader)
+    ├── gh_copilot.js            # GitHub Copilot CLI (provider + grader)
+    └── gemini.js                # Gemini CLI (provider + grader)
 ```
 
 ## Quick Start
@@ -43,6 +44,7 @@ All scripts are cross-platform Node.js files that work on Windows, Linux, and Ma
 - **Claude Code CLI** (`claude.js`) - Anthropic's Claude Code assistant
 - **Devin CLI** (`devin.js`) - Cognition's Devin AI assistant
 - **GitHub Copilot CLI** (`gh_copilot.js`) - GitHub's Copilot assistant
+- **Gemini CLI** (`gemini.js`) - Google's Gemini assistant
 
 To switch providers, edit `promptfooconfig.yaml` and uncomment the desired provider.
 
@@ -81,14 +83,14 @@ Uses a judge LLM to score the response against natural language criteria. Each a
 
 #### Grader Provider
 
-The judge LLM is configured under `defaultTest.options.provider`. This project uses `devin.js` (which auto-detects grader mode), but the combined scripts for Claude and GitHub Copilot are also available.
+The judge LLM is configured under `defaultTest.options.provider`. This project uses `devin.js` (which auto-detects grader mode), but the combined scripts for Claude, GitHub Copilot, and Gemini are also available.
 
 > **How grader mode works**: When the combined scripts receive a JSON chat array
 > (`[{"role":"system",...}, {"role":"user",...}]`), they automatically enter grader mode,
 > parse the array, and route each part correctly to the CLI tool.
 >
 > Claude Code supports `--system-prompt` to replace its default context entirely,
-> keeping system and user messages separate. Devin and GitHub Copilot don't have an
+> keeping system and user messages separate. Devin, GitHub Copilot, and Gemini don't have an
 > equivalent flag, so their scripts concatenate the system instructions and user
 > message into one combined prompt instead.
 
@@ -260,6 +262,7 @@ module.exports = {
   - Claude Code CLI (`claude`)
   - Devin CLI (`devin`)
   - GitHub Copilot CLI (`gh copilot`)
+  - Gemini CLI (`gemini`)
 
 ## Troubleshooting
 
