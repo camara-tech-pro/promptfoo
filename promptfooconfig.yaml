@@ -112,36 +112,30 @@ tests:
   # ========================================
   # SCRIPT-BASED DETERMINISTIC EVALUATIONS
   # ========================================
-  # These evaluations use JavaScript logic that mirrors the functions in eval-script.js
-  # The eval-script.js file contains reusable evaluation functions that can be referenced
-  # in different configurations. For production use, you would load the external file:
-  # const evalScript = require('./eval-script.js');
-  # return evalScript.hasCodeFormatting(output);
+  # These evaluations call functions exported from eval-script.js directly.
+  # Syntax: file://path/to/script.js:functionName
 
   - vars:
       query: 'Write a function to validate an email address'
     description: 'Email validation - script-based eval'
     assert:
-      # Check if response contains code formatting (mirrors hasCodeFormatting from eval-script.js)
       - type: javascript
-        value: 'output.includes("```") || output.includes("function")'
-      # Check if response is substantial enough (basic quality check)
+        value: file://eval-script.js:hasCodeFormatting
       - type: javascript
-        value: 'output.length > 100'
+        value: file://eval-script.js:explainsWhy
+      - type: javascript
+        value: file://eval-script.js:mentionsBestPractices
 
   - vars:
       query: 'Explain the difference between == and === in JavaScript'
     description: 'Equality operators - script-based eval'
     assert:
-      # Check if response contains code formatting (mirrors hasCodeFormatting from eval-script.js)
       - type: javascript
-        value: 'output.includes("```") || output.includes("code")'
-      # Check if response explains the reasoning (mirrors explainsWhy from eval-script.js)
+        value: file://eval-script.js:hasCodeFormatting
       - type: javascript
-        value: 'output.toLowerCase().includes("type") || output.toLowerCase().includes("coercion")'
-      # Check response length for conciseness (mirrors isConcise from eval-script.js)
+        value: file://eval-script.js:explainsWhy
       - type: javascript
-        value: 'output.length > 100 && output.length < 2000'
+        value: file://eval-script.js:isConcise
 
 # Output configuration
 outputPath: results.html
