@@ -17,14 +17,14 @@ defaultTest:
     # Claude uses --system-prompt to keep instructions clean; Devin and
     # Copilot concatenate system + user into one prompt (no equivalent flag).
     #
-    # Devin CLI grader
-    # provider: 'exec: ./devin_grader.sh'
+    # Devin CLI grader — ACTIVE
+    provider: 'exec: ./devin_grader.sh'
     #
     # GitHub Copilot CLI grader
     # provider: 'exec: ./gh_copilot_grader.sh'
     #
-    # Claude Code CLI grader — ACTIVE
-    provider: 'exec: ./claude_grader.sh'
+    # Claude Code CLI grader
+    # provider: 'exec: ./claude_grader.sh'
 
     # ========================================
     # RUBRIC GRADER — POWERSHELL (Windows)
