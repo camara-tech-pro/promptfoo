@@ -14,19 +14,12 @@ promptfoo/
 ├── promptfooconfig.yaml         # Main promptfoo configuration
 ├── prompt-under-test.md         # The prompt being tested
 ├── eval-script.js               # Custom JavaScript evaluation functions
+├── AGENTS.md                    # Project configuration notes
 │
-├── Execution providers (generate responses under test)
-├── claude_code_provider.ps1     # Claude Code CLI provider (PowerShell)
-├── devin_provider.ps1           # Devin CLI provider (PowerShell)
-├── gh_copilot_provider.ps1      # GitHub Copilot CLI provider (PowerShell)
-├── claude_code_provider.sh      # Claude Code CLI provider (bash)
-├── devin_provider.sh            # Devin CLI provider (bash)
-├── gh_copilot_provider.sh       # GitHub Copilot CLI provider (bash)
-│
-└── Rubric graders (judge LLMs used to score llm-rubric assertions)
-    ├── claude_grader.ps1        # Claude Code CLI grader (PowerShell)
-    ├── devin_grader.ps1         # Devin CLI grader (PowerShell)
-    └── gh_copilot_grader.ps1    # GitHub Copilot CLI grader (PowerShell)
+└── CLI Scripts (Cross-platform)
+    ├── claude.js                # Claude Code CLI (provider + grader)
+    ├── devin.js                 # Devin CLI (provider + grader)
+    └── gh_copilot.js            # GitHub Copilot CLI (provider + grader)
 ```
 
 ## Quick Start
@@ -42,16 +35,25 @@ Results are generated in `results.html` after each evaluation run.
 ## Configuration
 
 ### Active Provider
-The configuration currently uses **Devin CLI (PowerShell version)** as the default provider.
+The configuration currently uses **Devin CLI** as the default provider for both generating responses and grading rubric evaluations.
 
 ### Available Providers
-All providers have both bash (Linux/Mac) and PowerShell (Windows) versions:
+All scripts are cross-platform Node.js files that work on Windows, Linux, and Mac:
 
-- **Claude Code CLI** - Anthropic's Claude Code assistant
-- **Devin CLI** - Cognition's Devin AI assistant  
-- **GitHub Copilot CLI** - GitHub's Copilot assistant
+- **Claude Code CLI** (`claude.js`) - Anthropic's Claude Code assistant
+- **Devin CLI** (`devin.js`) - Cognition's Devin AI assistant
+- **GitHub Copilot CLI** (`gh_copilot.js`) - GitHub's Copilot assistant
 
 To switch providers, edit `promptfooconfig.yaml` and uncomment the desired provider.
+
+### How the Scripts Work
+
+Each CLI script combines both provider and grader functionality in one file, auto-detecting the mode based on prompt format:
+
+- **Provider mode**: When the prompt is plain text, the script acts as a provider and passes the text directly to the CLI tool
+- **Grader mode**: When the prompt is a JSON array `[{role, content}, ...]`, the script acts as a grader, parsing the chat array and routing system/user messages appropriately
+
+This eliminates the need for separate provider and grader scripts while maintaining full functionality.
 
 ## Evaluation Types
 
@@ -79,16 +81,16 @@ Uses a judge LLM to score the response against natural language criteria. Each a
 
 #### Grader Provider
 
-The judge LLM is configured under `defaultTest.options.provider`. This project uses `claude_grader.ps1`, which parses the JSON chat array promptfoo sends to graders and passes system and user messages separately via `claude --system-prompt`. Commented alternatives for Devin and GitHub Copilot are in the config.
+The judge LLM is configured under `defaultTest.options.provider`. This project uses `devin.js` (which auto-detects grader mode), but the combined scripts for Claude and GitHub Copilot are also available.
 
-> **Why a separate grader script?** Promptfoo sends graders a JSON chat array
-> (`[{"role":"system",...}, {"role":"user",...}]`), not a plain text string.
-> A plain execution provider would pass that raw JSON blob as the prompt, confusing
-> the model. The grader scripts parse the array and route each part correctly.
+> **How grader mode works**: When the combined scripts receive a JSON chat array
+> (`[{"role":"system",...}, {"role":"user",...}]`), they automatically enter grader mode,
+> parse the array, and route each part correctly to the CLI tool.
 >
-> Claude supports `--system-prompt` to replace its default context entirely.
-> Devin and Copilot don't have an equivalent flag, so their graders concatenate
-> the system instructions and user message into one combined prompt instead.
+> Claude Code supports `--system-prompt` to replace its default context entirely,
+> keeping system and user messages separate. Devin and GitHub Copilot don't have an
+> equivalent flag, so their scripts concatenate the system instructions and user
+> message into one combined prompt instead.
 
 #### Assertion Parameters
 
@@ -183,23 +185,16 @@ module.exports = {
 };
 ```
 
-## PowerShell Provider Scripts
+## Running Scripts Directly
 
-The PowerShell scripts (`*.ps1`) are Windows equivalents of the bash scripts and provide the same functionality:
+You can test the CLI scripts directly to verify functionality:
 
-- **claude_code_provider.ps1** - Claude Code CLI with model selection
-- **devin_provider.ps1** - Devin CLI with model selection
-- **gh_copilot_provider.ps1** - GitHub Copilot CLI with model selection
+```bash
+# Provider mode (plain text prompt)
+node ./devin.js "What is 2+2?" '{"config": {"model": "SWE-1.6"}}' "context"
 
-All PowerShell scripts:
-- Use `ConvertFrom-Json` instead of `jq` for JSON parsing
-- Include proper error handling for JSON parsing failures
-- Handle empty config objects correctly
-- Require `-ExecutionPolicy Bypass` flag for Windows execution policies
-
-### Running PowerShell Scripts Directly
-```powershell
-powershell -ExecutionPolicy Bypass -File .\devin_provider.ps1 "Your prompt here" '{"config": {"model": "SWE-1.6"}}' "context"
+# Grader mode (JSON array prompt)
+node ./devin.js '[{"role":"system","content":"You are an evaluator..."},{"role":"user","content":"Test message"}]' '{}'
 ```
 
 ## Prompt Under Test
@@ -260,8 +255,7 @@ module.exports = {
 
 ## Requirements
 
-- Node.js (for promptfoo)
-- PowerShell (on Windows) or bash (on Linux/Mac)
+- Node.js (for promptfoo and CLI scripts)
 - CLI tools for the providers you want to use:
   - Claude Code CLI (`claude`)
   - Devin CLI (`devin`)
@@ -269,17 +263,20 @@ module.exports = {
 
 ## Troubleshooting
 
-### PowerShell Execution Policy
-If you get execution policy errors on Windows, use the `-ExecutionPolicy Bypass` flag or run:
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
-
 ### Provider CLI Installation
 Ensure your chosen CLI tool is properly installed and accessible in your PATH.
 
-### JSON Parsing Errors
-The PowerShell scripts include error handling for JSON parsing. If you encounter issues, verify the config format is correct.
+### Script Execution Issues
+If you encounter issues running the Node.js scripts:
+- Verify Node.js is installed: `node --version`
+- Check script permissions: `ls -la *.js` (should be executable)
+- Test scripts directly using the examples in "Running Scripts Directly" section
+
+### Configuration Errors
+If promptfoo reports configuration errors:
+- Verify YAML syntax in `promptfooconfig.yaml`
+- Check that the referenced script files exist
+- Ensure model names match what your CLI tool supports
 
 ## License
 
