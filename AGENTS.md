@@ -31,8 +31,10 @@ Combined scripts that auto-detect mode based on prompt format:
 ## Running Evaluations
 
 ```bash
-npx promptfoo eval
+npx promptfoo eval --no-cache
 ```
+
+> Always use `--no-cache` — promptfoo cannot detect changes inside external script files or `prompt-under-test.md`, so cached results may be stale.
 
 ## Viewing Results
 

@@ -27,8 +27,10 @@ promptfoo/
 
 ### Run Evaluations
 ```bash
-npx promptfoo eval
+npx promptfoo eval --no-cache
 ```
+
+> **Always use `--no-cache`** when running evaluations. This project uses external script files (`devin.js`, `claude.js`, etc.) and an external prompt file (`prompt-under-test.md`). Promptfoo's cache keys are based on the provider string and prompt text — they do not detect changes inside referenced files. Running without `--no-cache` can return stale results after you modify a script or the prompt file.
 
 ### View Results
 Results are generated in `results.html` after each evaluation run.
