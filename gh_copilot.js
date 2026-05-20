@@ -10,6 +10,16 @@
 
 const { spawnSync } = require('child_process');
 
+// On Windows, .cmd files (like copilot.cmd) cannot be spawned directly by Node.js.
+// Route through cmd.exe /c to resolve them without needing shell:true (which is
+// deprecated when combined with an args array in Node v22+).
+const IS_WIN = process.platform === 'win32';
+function spawnCopilot(args, opts) {
+  const cmd = IS_WIN ? 'cmd.exe' : 'copilot';
+  const fullArgs = IS_WIN ? ['/c', 'copilot', ...args] : args;
+  return spawnSync(cmd, fullArgs, opts);
+}
+
 const prompt = process.argv[2];
 const options = process.argv[3];
 const context = process.argv[4];
@@ -69,7 +79,7 @@ if (isGraderMode) {
     args.push('--model', model);
   }
 
-  const result = spawnSync('copilot', args, {
+  const result = spawnCopilot(args, {
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe']
   });
@@ -107,7 +117,7 @@ if (isGraderMode) {
     args.push('--model', model);
   }
 
-  const result = spawnSync('copilot', args, {
+  const result = spawnCopilot(args, {
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe']
   });
