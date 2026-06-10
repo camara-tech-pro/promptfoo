@@ -25,6 +25,9 @@ defaultTest:
     # Claude Code CLI grader
     # provider: 'exec: node ./claude.js'
     #
+    # Kiro CLI grader
+    # provider: 'exec: node ./kiro.js'
+    #
     # Gemini CLI grader
     # provider: 'exec: node ./gemini.js'
 
@@ -37,7 +40,7 @@ providers:
   # Grader mode: prompt is JSON array [{role, content}, ...]
   # Provider mode: prompt is plain text
   #
-  # Devin CLI provider — ACTIVE
+  # Devin CLI provider
   - id: 'exec: node ./devin.js'
     config:
       model: 'SWE-1.6'
@@ -56,6 +59,11 @@ providers:
   # - id: 'exec: node ./gemini.js'
   #   config:
   #     model: 'gemini-1.5-flash'
+
+  # Kiro CLI provider
+  # - id: 'exec: node ./kiro.js'
+  #   config:
+  #     model: 'claude-sonnet-4.6'
 
 # Test cases with different evaluation types
 tests:
