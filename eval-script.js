@@ -12,7 +12,9 @@
 function hasCodeFormatting(output) {
   const hasFencedBlock = /```[\s\S]*?```/.test(output);
   const hasInlineCode = /`[^`]+`/.test(output);
-  return hasFencedBlock || hasInlineCode;
+  // kiro-cli renders markdown, stripping fences but leaving language tag on its own line
+  const hasRenderedBlock = /^(javascript|typescript|python|go|java|rust|bash|sh)\n/m.test(output);
+  return hasFencedBlock || hasInlineCode || hasRenderedBlock;
 }
 
 /**
