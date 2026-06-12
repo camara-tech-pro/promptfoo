@@ -27,6 +27,7 @@ Combined scripts that auto-detect mode based on prompt format:
 - `gh_copilot.js` - GitHub Copilot CLI (provider + grader)
 - `claude.js` - Claude Code CLI (provider + grader)
 - `gemini.js` - Gemini CLI (provider + grader)
+- `kiro.js` - Kiro CLI (provider + grader)
 
 ## Running Evaluations
 
