@@ -28,8 +28,8 @@ defaultTest:
     # Kiro CLI grader
     # provider: 'exec: node ./kiro.js'
     #
-    # Gemini CLI grader
-    # provider: 'exec: node ./gemini.js'
+    # Google Antigravity (AGY) CLI grader
+    # provider: 'exec: node ./agy.js'
 
 # Use devin cli as a provider via script execution
 providers:
@@ -55,10 +55,10 @@ providers:
   #   config:
   #     model: 'haiku'
 
-  # Gemini CLI provider
-  # - id: 'exec: node ./gemini.js'
+  # Google Antigravity (AGY) CLI provider
+  # - id: 'exec: node ./agy.js'
   #   config:
-  #     model: 'gemini-1.5-flash'
+  #     model: 'gemini-3.5-flash'
 
   # Kiro CLI provider
   # - id: 'exec: node ./kiro.js'
