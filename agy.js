@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Combined Gemini CLI provider and grader for promptfoo
+// Combined Google Antigravity (AGY) CLI provider and grader for promptfoo
 //
 // Auto-detects mode based on prompt format:
 // - Grader mode: Prompt is JSON array [{role, content}, ...]
 // - Provider mode: Prompt is plain text
 //
 // Grader: Parses JSON chat array, concatenates system + user messages (no --system-prompt)
-// Provider: Passes prompt directly to Gemini CLI
+// Provider: Passes prompt directly to AGY CLI
 
 const { spawnSync } = require('child_process');
 
@@ -28,7 +28,7 @@ try {
 if (isGraderMode) {
   // ===== GRADER MODE =====
   // Parse OPTIONS to get model from config
-  let model = ''; // Default to empty (no model flag)
+  let model = ''; // Default to empty (no model flag, agy will use default)
   if (options && options !== '{}') {
     try {
       const optionsObj = JSON.parse(options);
@@ -60,16 +60,16 @@ if (isGraderMode) {
     userMsg = prompt;
   }
 
-  // Combine system and user into one prompt (gemini has no --system-prompt)
+  // Combine system and user into one prompt (agy has no --system-prompt)
   const fullPrompt = `${systemMsg}\n\n${userMsg}`;
 
-  // Build command with optional model flag
-  const args = ['-p', fullPrompt];
+  // Build command with optional model flag and skip permissions flag to run non-interactively
+  const args = ['-p', fullPrompt, '--dangerously-skip-permissions'];
   if (model) {
     args.push('--model', model);
   }
 
-  const result = spawnSync('gemini', args, {
+  const result = spawnSync('agy', args, {
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe']
   });
@@ -88,7 +88,7 @@ if (isGraderMode) {
 } else {
   // ===== PROVIDER MODE =====
   // Parse OPTIONS to get model from config
-  let model = ''; // Default to empty (no model flag)
+  let model = ''; // Default to empty (no model flag, agy will use default)
   if (options && options !== '{}') {
     try {
       const optionsObj = JSON.parse(options);
@@ -101,13 +101,13 @@ if (isGraderMode) {
     }
   }
 
-  // Build command with optional model flag
-  const args = ['-p', prompt];
+  // Build command with optional model flag and skip permissions flag to run non-interactively
+  const args = ['-p', prompt, '--dangerously-skip-permissions'];
   if (model) {
     args.push('--model', model);
   }
 
-  const result = spawnSync('gemini', args, {
+  const result = spawnSync('agy', args, {
     encoding: 'utf8',
     stdio: ['pipe', 'pipe', 'pipe']
   });

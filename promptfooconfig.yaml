@@ -25,8 +25,11 @@ defaultTest:
     # Claude Code CLI grader
     # provider: 'exec: node ./claude.js'
     #
-    # Gemini CLI grader
-    # provider: 'exec: node ./gemini.js'
+    # Kiro CLI grader
+    # provider: 'exec: node ./kiro.js'
+    #
+    # Google Antigravity (AGY) CLI grader
+    # provider: 'exec: node ./agy.js'
 
 # Use devin cli as a provider via script execution
 providers:
@@ -37,7 +40,7 @@ providers:
   # Grader mode: prompt is JSON array [{role, content}, ...]
   # Provider mode: prompt is plain text
   #
-  # Devin CLI provider — ACTIVE
+  # Devin CLI provider
   - id: 'exec: node ./devin.js'
     label: 'Devin SWE-1.6'
     config:
@@ -62,11 +65,16 @@ providers:
   #   config:
   #     model: 'haiku'
 
-  # Gemini CLI provider
-  # - id: 'exec: node ./gemini.js'
+  # Google Antigravity (AGY) CLI provider
+  # - id: 'exec: node ./agy.js'
   #   label: 'Gemini Flash'
   #   config:
-  #     model: 'gemini-1.5-flash'
+  #     model: 'gemini-3.5-flash'
+
+  # Kiro CLI provider
+  # - id: 'exec: node ./kiro.js'
+  #   config:
+  #     model: 'claude-sonnet-4.6'
 
 # Test cases with different evaluation types
 tests:
