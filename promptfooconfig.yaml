@@ -212,5 +212,6 @@ tests:
   # Keep in mind that the file path is relative to the main config file.
   # ========================================
   - file://fileBased.testSuite.yaml
+  - file://matchSchema.testSuite.yaml
 # Output configuration
 outputPath: results.html
