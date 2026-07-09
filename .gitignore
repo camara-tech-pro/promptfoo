@@ -1,7 +1,7 @@
 # Promptfoo outputs
-results.html
-results.json
-results.csv
+*results.html
+*results.json
+*results.csv
 promptfoo/
 
 # Node modules
