@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
-description: Hello-WorldEvaluation Driven Development demonstration with promptfoo
+description: Hello-World Evaluation Driven Development demonstration with promptfoo
 
 # Define prompts to test - template that includes base prompt
 prompts:
@@ -17,19 +17,19 @@ defaultTest:
     # Provider mode: prompt is plain text
     #
     # Devin CLI grader — ACTIVE
-    provider: 'exec: node ../devin.js'
+    provider: 'exec: node ./../devin.js'
     #
     # GitHub Copilot CLI grader
-    # provider: 'exec: node ../gh_copilot.js'
+    # provider: 'exec: node ./gh_copilot.js'
     #
     # Claude Code CLI grader
-    # provider: 'exec: node ../claude.js'
+    # provider: 'exec: node ./claude.js'
     #
     # Kiro CLI grader
-    # provider: 'exec: node ../kiro.js'
+    # provider: 'exec: node ./kiro.js'
     #
     # Google Antigravity (AGY) CLI grader
-    # provider: 'exec: node ../agy.js'
+    # provider: 'exec: node ./agy.js'
 
 # Use devin cli as a provider via script execution
 providers:
@@ -41,7 +41,7 @@ providers:
   # Provider mode: prompt is plain text
   #
   # Devin CLI provider
-  - id: 'exec: node ../devin.js'
+  - id: 'exec: node ./../devin.js'
     label: 'Devin SWE-1.6'
     config:
       model: 'SWE-1.6'
@@ -83,7 +83,7 @@ tests:
   # DETERMINISTIC EVALUATIONS (contains/equiv)
   # ========================================
   - vars:
-      request: 'I want my existing pomodoro app to ring with a customizable chime when the timer expires, and be able to change the chimes for the completion of a pomodoro, completion of rest, and indication when it is time for a long break.'
+      request: 'I want to extend an existing pomodoro app to ring with a customizable chime when the timer expires, and be able to change the chimes for the completion of a pomodoro, completion of rest, and indication when it is time for a long break.'
     description: 'Pomodoro app chime customization - deterministic eval'
     assert:
       - type: icontains
@@ -105,7 +105,7 @@ tests:
   # critical vs. nice-to-have criteria, and weight what matters most.
 
   - vars:
-      request: 'I want my existing pomodoro app to ring with a customizable chime when the timer expires, and be able to change the chimes for the completion of a pomodoro, completion of rest, and indication when it is time for a long break.'
+      request: 'I want to extend an existing pomodoro app to ring with a customizable chime when the timer expires, and be able to change the chimes for the completion of a pomodoro, completion of rest, and indication when it is time for a long break.'
     description: 'PRD Generation - rubric with per-dimension scoring'
     assert:
       # Core definition — highest weight; must score at least 0.7
