@@ -4,8 +4,7 @@ description: Evaluation Driven Development demonstration with promptfoo for "How
 # Define prompts to test - template that includes base prompt
 prompts:
   - file://trust-ai/simple.prompt.md
-  # - "@./trust-ai/simple.prompt.md {{request}}"
-  #- "@trust-ai/advanced.prompt.md {{request}}"
+  # - file://trust-ai/advanced.prompt.md
 
 # External evaluation script for custom deterministic evaluations
 # This script contains custom assertion functions used in tests
@@ -51,9 +50,9 @@ providers:
   # Devin CLI provider — For Testing a Second Model
   # MUST Use Label to differentiate providers with same ID (first in wins otherwise)
   # - id: 'exec: node ./devin.js'
-  #   label: 'Devin Haiku' # MUST provide label when using same provider with different config!
+  #   label: 'Devin Kimi' # MUST provide label when using same provider with different config!
   #   config:
-  #     model: 'claude-haiku-4.5'
+  #     model: 'kimi-k2.7'
 
   # GitHub Copilot CLI provider
   # - id: 'exec: node ./gh_copilot.js'
