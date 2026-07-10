@@ -78,7 +78,15 @@ if (isGraderMode) {
     process.exit(result.status || 1);
   }
 
-  console.log(result.stdout);
+  let output = result.stdout;
+  const jsonMatch = output.match(/```json\s*([\s\S]*?)\s*```/);
+  if (jsonMatch) {
+    output = jsonMatch[1].trim();
+  }
+  console.log(output);
+
+
+  // console.log(result.stdout);
 } else {
   // ===== PROVIDER MODE =====
   // Parse OPTIONS to get model from config
