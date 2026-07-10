@@ -5,6 +5,7 @@
   },
   "scripts": {
     "test": "promptfoo eval --no-cache --config ",
+    "test:verbose": "promptfoo eval --no-cache --verbose --config $1 > test.log",
     "view": "promptfoo view"
   }
 }

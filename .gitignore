@@ -3,6 +3,7 @@
 *results.json
 *results.csv
 promptfoo/
+*.log
 
 # Node modules
 node_modules/
