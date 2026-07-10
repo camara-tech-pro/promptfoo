@@ -23,3 +23,7 @@ The PRD should include:
 - call out assumptions, and open questions
 </CONSTRAINTS>
 
+Output ONLY the PRD content, no additional text.
+
+Here's the Request:
+{{request}}
