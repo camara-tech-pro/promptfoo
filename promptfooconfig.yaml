@@ -31,6 +31,14 @@ defaultTest:
     # Google Antigravity (AGY) CLI grader
     # provider: 'exec: node ./agy.js'
 
+    # Ollama Grader
+    # provider:
+    #   - id: 'exec: node ./ollama.js'
+    #     label: 'Ollama Qwen'
+    #     config:
+    #       port: 1234
+    #       model: 'qwen/qwen3-8b'
+
 # Use devin cli as a provider via script execution
 providers:
   # ========================================
@@ -75,6 +83,15 @@ providers:
   # - id: 'exec: node ./kiro.js'
   #   config:
   #     model: 'claude-sonnet-4.6'
+
+  # Ollama provider
+  # - id: 'exec: node ./ollama.js'
+  #   label: 'Ollama Qwen'
+  #   config:
+  #     host: localhost # defaults to localhost
+  #     port: 1234 # defaults to 11434
+  #     endpoint: 'api/chat/completions' # defaults to api/v1/chat
+  #     model: 'qwen/qwen3-8b' # defaults to llama2
 
 # Test cases with different evaluation types
 tests:
