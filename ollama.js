@@ -6,7 +6,7 @@
 // - Provider mode: Prompt is plain text
 //
 // Makes HTTP requests to a local Ollama server
-// Configurable via options: port (default 11434), model (default llama2)
+// Configurable via options: host (default localhost), port (default 11434), endpoint (default /api/v1/chat), model (default llama2)
 
 const http = require('http');
 
@@ -14,15 +14,23 @@ const prompt = process.argv[2];
 const options = process.argv[3];
 const context = process.argv[4];
 
-// Parse options to extract port and model
+// Parse options to extract host, port, endpoint, and model
+let host = 'localhost'; // Default local host
 let port = 11434; // Default Ollama port
+let endpoint = '/api/v1/chat'; // Default LM Studio endpoint
 let model = 'llama2'; // Default model
 if (options && options !== '{}') {
   try {
     const optionsObj = JSON.parse(options);
     if (optionsObj.config) {
+      if (optionsObj.config.host) {
+        host = optionsObj.config.host;
+      }
       if (optionsObj.config.port) {
         port = optionsObj.config.port;
+      }
+      if (optionsObj.config.endpoint) {
+        endpoint = optionsObj.config.endpoint;
       }
       if (optionsObj.config.model) {
         model = optionsObj.config.model;
@@ -53,10 +61,10 @@ function callOllama(input) {
       stream: false
     });
 
-    const options = {
-      hostname: 'localhost',
+    const requestOptions = {
+      hostname: host,
       port: port,
-      path: '/api/v1/chat',
+      path: endpoint,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +72,7 @@ function callOllama(input) {
       }
     };
 
-    const req = http.request(options, (res) => {
+    const req = http.request(requestOptions, (res) => {
       let data = '';
 
       res.on('data', (chunk) => {
@@ -93,7 +101,7 @@ function callOllama(input) {
     });
 
     req.on('error', (e) => {
-      reject(new Error(`Failed to connect to Ollama at localhost:${port}: ${e.message}`));
+      reject(new Error(`Failed to connect to Ollama at ${host}:${port}${endpoint}: ${e.message}`));
     });
 
     req.write(payload);
