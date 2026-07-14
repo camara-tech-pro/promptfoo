@@ -191,6 +191,8 @@ module.exports = {
 };
 ```
 
+For example, the `matchSchema-script.js` file contains a function that checks if the output matches a given JSON schema, and demonstrates how a custom function might be added. 
+
 ## Running Scripts Directly
 
 You can test the CLI scripts directly to verify functionality:
@@ -268,6 +270,7 @@ module.exports = {
   - GitHub Copilot CLI (`gh copilot`)
   - Google Antigravity CLI (`agy`)
   - Kiro CLI (`kiro-cli`)
+  - _or_ a local Ollama instance (`ollama`)
 
 ## Troubleshooting
 
@@ -285,6 +288,7 @@ If promptfoo reports configuration errors:
 - Verify YAML syntax in `promptfooconfig.yaml`
 - Check that the referenced script files exist
 - Ensure model names match what your CLI tool supports
+- For Ollama, ensure the local instance is running and accessible, and that you've set the correct model name and port in the configuration
 
 ## License
 
