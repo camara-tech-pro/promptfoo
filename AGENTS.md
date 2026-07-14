@@ -28,6 +28,7 @@ Combined scripts that auto-detect mode based on prompt format:
 - `claude.js` - Claude Code CLI (provider + grader)
 - `agy.js` - Google Antigravity (AGY) CLI (provider + grader)
 - `kiro.js` - Kiro CLI (provider + grader)
+- `ollama.js` - Local Ollama instance (provider + grader)
 
 ## Running Evaluations
 
