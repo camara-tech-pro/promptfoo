@@ -16,21 +16,23 @@ defaultTest:
     # Combined scripts auto-detect mode: provider vs grader
     # Grader mode: prompt is JSON array [{role, content}, ...]
     # Provider mode: prompt is plain text
+    # Specify the Provider by the Label from the providers section.
     #
     # Devin CLI grader — ACTIVE
-    provider: 'exec: node ./devin.js'
+    provider: 'Devin SWE-1.6'
     #
     # GitHub Copilot CLI grader
-    # provider: 'exec: node ./gh_copilot.js'
+    # provider: 'Github Haiku'
     #
     # Claude Code CLI grader
-    # provider: 'exec: node ./claude.js'
+    # provider: 'Claude Haiku'
     #
     # Kiro CLI grader
-    # provider: 'exec: node ./kiro.js'
+    # provider: 'Kiro Sonnet'
     #
     # Google Antigravity (AGY) CLI grader
-    # provider: 'exec: node ./agy.js'
+    # provider: 'Gemini Flash'
+    #
 
 # Use devin cli as a provider via script execution
 providers:
@@ -74,6 +76,7 @@ providers:
 
   # Kiro CLI provider
   # - id: 'exec: node ./kiro.js'
+  #   label: 'Kiro Sonnet'
   #   config:
   #     model: 'claude-sonnet-4.6'
 
