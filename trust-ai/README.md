@@ -33,6 +33,12 @@ npx promptfoo --version
 ### Setup your agentic AI tool
 After ensuring promptfoo is available, you will need to setup your preferred agentic AI tool. For example, if you want to use Claude Code, you will need to install it and configure it.  You can find install instructions for the supported tools in the `docs` folder of this repository. 
 
+### Configure the promptfoo config file
+You will need to configure the promptfoo config file to use your agentic AI tool. 
+
+For example you can enable to use Claude Code commenting out the devin provider lines (lines 22, and 47-50), and uncommenting the lines for Claude Code (lines 28, and 66-69).
+
+
 ### Confirm your setup
 To confirm your setup is working, you can run the following command:
 ```bash
