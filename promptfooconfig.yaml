@@ -88,6 +88,7 @@ providers:
   #     port: 1234 # defaults to 11434
   #     endpoint: 'api/chat/completions' # defaults to api/v1/chat
   #     model: 'qwen/qwen3-8b' # defaults to llama2
+  #     documentRoot: './' # optional, if provided ollama.js will replace `@doc.md` with contents of `doc.md.` recursively.
 
 # Test cases with different evaluation types
 tests:
