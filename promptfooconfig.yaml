@@ -15,31 +15,26 @@ defaultTest:
     # Combined scripts auto-detect mode: provider vs grader
     # Grader mode: prompt is JSON array [{role, content}, ...]
     # Provider mode: prompt is plain text
+    # SPECIFY the Provider by the Label from the providers section.
     #
     # Devin CLI grader — ACTIVE
-    provider: 'exec: node ./devin.js'
+    provider: 'SWE-1.6'
     #
     # GitHub Copilot CLI grader
-    # provider: 'exec: node ./gh_copilot.js'
+    # provider: 'GitHub Haiku'
     #
     # Claude Code CLI grader
-    # provider: 'exec: node ./claude.js'
+    # provider: 'Claude Haiku'
     #
     # Kiro CLI grader
-    # provider: 'exec: node ./kiro.js'
+    # provider: 'Kiro Sonnet'
     #
     # Google Antigravity (AGY) CLI grader
-    # provider: 'exec: node ./agy.js'
-
+    # provider: 'Gemini Flash'
+    #
     # Ollama Grader
-    # provider:
-    #   - id: 'exec: node ./ollama.js'
-    #     label: 'Ollama Qwen'
-    #     config:
-    #       port: 1234
-    #       model: 'qwen/qwen3-8b'
+    # provider: 'Ollama Qwen'
 
-# Use devin cli as a provider via script execution
 providers:
   # ========================================
   # NODE.JS VERSIONS (Cross-platform)
@@ -81,6 +76,7 @@ providers:
 
   # Kiro CLI provider
   # - id: 'exec: node ./kiro.js'
+  #   label: 'Kiro Sonnet'
   #   config:
   #     model: 'claude-sonnet-4.6'
 
@@ -92,6 +88,7 @@ providers:
   #     port: 1234 # defaults to 11434
   #     endpoint: 'api/chat/completions' # defaults to api/v1/chat
   #     model: 'qwen/qwen3-8b' # defaults to llama2
+  #     documentRoot: './' # optional, if provided ollama.js will replace `@doc.md` with contents of `doc.md.` recursively.
 
 # Test cases with different evaluation types
 tests:
