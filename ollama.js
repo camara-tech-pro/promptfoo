@@ -231,7 +231,13 @@ async function main() {
         userMsg = prompt;
       }
 
-      const output = await callOllama(userMsg, systemMsg);
+      let output = await callOllama(userMsg, systemMsg);
+
+      const jsonMatch = output.match(/```json\s*([\s\S]*?)\s*```/);
+      if (jsonMatch) {
+        output = jsonMatch[1].trim();
+      }
+      
       console.log(output);
     } else {
       // ===== PROVIDER MODE =====
