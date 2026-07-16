@@ -148,19 +148,11 @@ function renderPrompt(promptText, documentRoot) {
 }
 
 // Helper function to make HTTP request to Ollama
-function callOllama(input, systemPrompt) {
-
-  const messages = [];
-  if (systemPrompt) {
-    messages.push({
-      role: 'system',
-      content: systemPrompt
-    });
-  }
-  messages.push({
+function callOllama(input) {
+  const messages = [{
     role: 'user',
     content: input
-  });
+  }];
 
   return new Promise((resolve, reject) => {
     const payloadObj = {
@@ -250,7 +242,7 @@ async function main() {
       // Merge system prompt into user message for model compatibility
       // Some models (like Mistral) don't support system role in their Jinja templates
       const mergedUserMsg = systemMsg + '\n\n' + userMsg;
-      let output = await callOllama(mergedUserMsg, null);
+      let output = await callOllama(mergedUserMsg);
 
       const jsonMatch = output.match(/```json\s*([\s\S]*?)\s*```/);
       if (jsonMatch) {
